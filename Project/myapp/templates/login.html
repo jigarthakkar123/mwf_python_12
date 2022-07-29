@@ -45,10 +45,11 @@
               <form class="submitphoto_form" method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 
-                <input type="mail" class="wp-form-control wpcf7-email" placeholder="Email address" name="email">
+                <input type="mail" class="wp-form-control wpcf7-email" placeholder="Email address" name="email" id="email">
+                <span id="email_error"></span>
                 
                 <input type="password" class="wp-form-control wpcf7-text" placeholder="Your Password" name="password">
-                <
+                
                <button class="wpcf7-submit button--itzel" type="submit"><i class="button__icon fa fa-envelope"></i><span>Login</span></button>                
               </form>
             </div>
@@ -57,7 +58,29 @@
         </div>
       </div>
     </section>
+    <script>
+          $("#email").change(function(){
+            var email=$(this).val();
+          
+            $.ajax({
+              url: '/ajax/validate_email/',
+              data: {
+                'email': email
+              },
+              dataType: 'json',
+              success: function (data) {
+                if (!data.is_taken) {
+                  document.getElementById("email").style.border="5px solid red";
+                  document.getElementById("email_error").innerHTML="This Email ID Is Not Registered";
+                }else{
+                  document.getElementById("email").style.border="5px solid green";
+                  document.getElementById("email_error").innerHTML="";
+                }
+              }
+            });
+          });
 
+        </script>
   </body>
 </html>
 {% endblock %}

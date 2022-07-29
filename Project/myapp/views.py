@@ -3,9 +3,16 @@ from .models import Contact,User,Doctor_Profile,Appointment,CancelAppointment,He
 from .paytm import generate_checksum, verify_checksum
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
+from django.http import JsonResponse
 
 
 # Create your views here.
+def validate_email(request):
+	email=request.GET.get('email')
+	data={
+		'is_taken':User.objects.filter(email__iexact=email).exists()
+	}
+	return JsonResponse(data)
 
 def initiate_payment(request):
     user=User.objects.get(email=request.session['email'])

@@ -46,7 +46,8 @@
                 {% csrf_token %}
                 <input type="text" class="wp-form-control wpcf7-text" placeholder="Your First Name" name="fname">
                 <input type="text" class="wp-form-control wpcf7-text" placeholder="Your Last Name" name="lname">
-                <input type="mail" class="wp-form-control wpcf7-email" placeholder="Email address" name="email">
+                <input type="mail" class="wp-form-control wpcf7-email" placeholder="Email address" name="email" id="email">
+                <span id="email_error"></span>
                 <input type="text" class="wp-form-control wpcf7-text" placeholder="Your Mobile" name="mobile">          
                 <textarea class="wp-form-control wpcf7-textarea" cols="30" rows="10" placeholder="What would you like to tell us" name="address"></textarea>
                 <input type="password" class="wp-form-control wpcf7-text" placeholder="Your Password" name="password">
@@ -59,7 +60,29 @@
         </div>
       </div>
     </section>
+    <script>
+          $("#email").change(function(){
+            var email=$(this).val();
+          
+            $.ajax({
+              url: '/ajax/validate_email/',
+              data: {
+                'email': email
+              },
+              dataType: 'json',
+              success: function (data) {
+                if (data.is_taken) {
+                  document.getElementById("email").style.border="5px solid red";
+                  document.getElementById("email_error").innerHTML="This Email ID Already Registered";
+                }else{
+                  document.getElementById("email").style.border="5px solid green";
+                  document.getElementById("email_error").innerHTML="";
+                }
+              }
+            });
+          });
 
+        </script>
   </body>
 </html>
 {% endblock %}

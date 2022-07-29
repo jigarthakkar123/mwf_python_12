@@ -22,4 +22,5 @@ urlpatterns = [
     path('doctor_cancel_appointment/<int:pk>/',views.doctor_cancel_appointment,name='doctor_cancel_appointment'),
     path('payment/', views.initiate_payment, name='payment'),
     path('callback/', views.callback, name='callback'),
+    path('ajax/validate_email/',views.validate_email,name='validate_email'),
 ]
